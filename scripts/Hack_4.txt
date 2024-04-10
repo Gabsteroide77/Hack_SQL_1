@@ -1,0 +1,41 @@
+create table countries(
+id_country serial primary key,
+name varchar(60) not null
+);
+
+create table priorities(
+id_priority serial primary key,
+type_name varchar(20) not null
+);
+
+create table contact_request(
+id_email varchar(180) primary key,
+id_country integer not null,
+id_priority integer not null,
+name varchar(60) not null,
+detail text not null,
+physical_address text not null,
+foreign key(id_country) references countries(id_country),
+foreign key(id_priority) references priorities(id_priority)
+);
+
+insert into countries (name) values ('Argentina'), ('Brazil'), ('Colombia'), ('Chile'), ('Venezuela');
+select * from countries;
+
+insert into priorities (type_name) values ('Directiva'), ('Gerencia'), ('Empleado');
+select from priorities;
+
+insert into contact_request (id_email, name, id_priority, id_country, detail, physical_address)
+values ('foo@foo.com', 'fooziman', 1, 5, 'Presidente Ejecutivo', 'Caracas'), 
+('bar@bar.com', 'barziman', 3, 3, 'Backend Developer', 'Bogota'), 
+('qux@qux.com', 'qux', 2, 2, 'Tech Lead', 'Brasilia');
+
+select * from contact_request inner join countries on contact_request.id_country = countries.id_country;
+select * from contact_request inner join priorities on contact_request.id_priority = priorities.id_priority;
+
+delete from contact_request where id_email = 'qux@qux.com';
+
+update contact_request set id_email = 'foo@foo.foo', name = 'fooz' where id_email = 'foo@foo.com';
+
+select * from contact_request inner join countries on contact_request.id_country = countries.id_country;
+select * from contact_request inner join priorities on contact_request.id_priority = priorities.id_priority;
